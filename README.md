@@ -53,7 +53,7 @@ Canon 的 **CAPT** 系列（LBP2900 / 3000 / 5100 / 6300 / 7010C / 7018C …）�
 ### 第 1 步 · 下载
 
 ```bash
-git clone https://github.com/<你的用户名>/canon-capt-airprint.git
+git clone https://github.com/xiaobaisiji/canon-capt-airprint.git
 cd canon-capt-airprint
 ```
 
@@ -258,7 +258,7 @@ canon-capt-airprint/
 
 ## 🤝 贡献
 
-装成功了？装失败了？都欢迎开 [Issue](https://github.com/<owner>/canon-capt-airprint/issues) 告诉我们你的**机型 + 发行版 + 报错**，
+装成功了？装失败了？都欢迎开 [Issue](https://github.com/xiaobaisiji/canon-capt-airprint/issues) 告诉我们你的**机型 + 发行版 + 报错**，
 每一条真实案例都会让下一个人的排障时间少一点。
 
 - 提交代码前请看一下 [CONTRIBUTING.md](CONTRIBUTING.md)

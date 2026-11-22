@@ -54,7 +54,7 @@ After:  printer → USB → NAS/Linux → LAN + AirPrint → phones, tablets, la
 ### Step 1 · Clone
 
 ```bash
-git clone https://github.com/<your-user>/canon-capt-airprint.git
+git clone https://github.com/xiaobaisiji/canon-capt-airprint.git
 cd canon-capt-airprint
 ```
 
@@ -272,7 +272,7 @@ canon-capt-airprint/
 ## 🤝 Contributing
 
 Worked for you? Broke on your machine? Either way, please open an
-[Issue](https://github.com/<owner>/canon-capt-airprint/issues) with your **model + distro + error**.
+[Issue](https://github.com/xiaobaisiji/canon-capt-airprint/issues) with your **model + distro + error**.
 Every real-world report saves the next person hours of debugging.
 
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before sending a PR

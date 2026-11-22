@@ -26,7 +26,7 @@ CUPS 版本（cupsd --version）：
 ## 提交 Pull Request
 
 ```bash
-git clone https://github.com/<owner>/canon-capt-airprint.git
+git clone https://github.com/xiaobaisiji/canon-capt-airprint.git
 cd canon-capt-airprint
 git checkout -b fix/your-topic
 # 修改后
