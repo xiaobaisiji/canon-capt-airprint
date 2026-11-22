@@ -41,6 +41,10 @@ Canon 的 **CAPT** 系列（LBP2900 / 3000 / 5100 / 6300 / 7010C / 7018C …）�
 <img src="docs/images/flow.svg" alt="打印数据流与故障点" width="880">
 </div>
 
+<div align="center">
+<img src="docs/images/ios-airprint.png" alt="iPhone 隔空打印" width="380">
+</div>
+
 **实测结果**：iPhone（iOS 15 / iOS 26）、Mac、Windows、Linux 全部打通，A4/A5/B5 可选。
 
 ---

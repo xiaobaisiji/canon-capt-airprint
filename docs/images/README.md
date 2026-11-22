@@ -4,7 +4,7 @@ README 中引用了这里的图片。建议提交以下几张（PNG，宽度 ≤
 
 | 文件名 | 内容 | 建议来源 |
 |---|---|---|
-| `ios-airprint.png` | iPhone 打印面板里选中 `Canon LBP7010C (主机名)` 的画面 | 照片 → 分享 → 打印 → 打印机 |
+| `ios-airprint.png` | ✅ **已上传**，README 已引用 | 照片 → 分享 → 打印 → 打印机 |
 | `ios-paper-size.png` | 展开「纸张大小」能看到 A4 / A5 / B5 的画面 | 同上，点「纸张大小」 |
 | `cups-queue.png` | CUPS 队列状态页（显示 idle、设备 URI、作业列表） | `http://<NAS-IP>:631/printers/<队列>` |
 
@@ -17,13 +17,10 @@ README 中引用了这里的图片。建议提交以下几张（PNG，宽度 ≤
 - **格式**：PNG；iPhone 截图默认就是 PNG，可直接用
 - **体积**：可用 `pngquant` / `tinypng` 压一下，仓库里不宜放 5MB 的大图
 
-## 提交后
+## 状态
 
-在 `README.md` 的「效果」小节里取消注释：
-
-```markdown
-![iPhone 隔空打印](docs/images/ios-airprint.png)
-```
+`ios-airprint.png` 已上传并在两个 README 中引用，无需再改。
+其余两张（纸张尺寸、CUPS 队列页）为可选。
 
 本地预览方法（不需要装工具）：
 

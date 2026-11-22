@@ -42,6 +42,12 @@ After:  printer → USB → NAS/Linux → LAN + AirPrint → phones, tablets, la
 <img src="docs/images/flow.svg" alt="Print data path and failure points" width="880">
 </div>
 
+<div align="center">
+<img src="docs/images/ios-airprint.png" alt="AirPrint from iPhone" width="380">
+<br>
+<sub>The printer shows up directly in the iOS print sheet — no app needed</sub>
+</div>
+
 **Verified**: iPhone (iOS 15 / iOS 26), macOS, Windows and Linux all work; A4/A5/B5 available.
 
 ---
@@ -143,6 +149,8 @@ Here is what is actually going on:
 | iOS 26 shows **no printer at all** | TXT has `URF=none`, unexpanded `%h` in `adminurl`, wrong `pdl` order |
 | iOS paper list only has Letter/Legal | `ReadyPaperSizes` defaults to the US set (and **must not be quoted**) |
 | Everything hangs after adding A6 to the PPD | It breaks `gs -sDEVICE=opvp` parameter parsing |
+| **PDFs from iPhone print with a black band** | CAPT driver mishandles **CMYK** images; the server must convert to RGB first |
+| **Phone printing is much slower than PC** | The phone sends raw files, so the *NAS* does the rendering — the PC does it on its own CPU |
 
 Full analysis 👉 [Troubleshooting (Chinese)](docs/03-故障排查.md)
 
@@ -156,7 +164,7 @@ Full analysis 👉 [Troubleshooting (Chinese)](docs/03-故障排查.md)
 |---|---|---|
 | 🧠 | [01 · Architecture](docs/01-原理与架构.md) | Data path, component responsibilities, pre-flight checks |
 | 🔧 | [02 · Deployment](docs/02-部署步骤.md) | 10-step manual deployment (if you want to understand every step) |
-| 🚑 | [03 · Troubleshooting](docs/03-故障排查.md) | 7-step triage, 12-symptom table, three-step rescue |
+| 🚑 | [03 · Troubleshooting](docs/03-故障排查.md) | 7-step triage, 12-symptom table, three-step rescue, **phone: black blocks / speed / A5 feed** |
 | ✅ | [04 · Verification & Ops](docs/04-验收与运维.md) | Acceptance checklist, logs, upgrade notes, rollback |
 | 📎 | [05 · Appendix](docs/05-附录.md) | File map, CAPT protocol cheat sheet, packet-capture guide |
 
@@ -224,6 +232,37 @@ If the PC truly sends nothing, use a RAW 9100 relay instead, or print from macOS
 </details>
 
 <details>
+<summary><b>A PDF from my iPhone prints with a black band across the header</b></summary>
+
+The source PDF uses **CMYK** images (typical for print-ready files exported from Illustrator/InDesign).
+The CAPT driver is designed for consumer colour lasers and renders CMYK unreliably — dark areas collapse to solid black.
+
+Fix: convert to RGB on the server before handing the page to the driver. This repo ships
+`scripts/canon-pdf-filter.sh`, which converts **only when `/DeviceCMYK` is present** and passes
+pure-RGB files straight through.
+
+```bash
+sudo bash scripts/patch-render-chain.sh
+```
+</details>
+
+<details>
+<summary><b>Why is printing from my phone so much slower than from my PC?</b></summary>
+
+Because of **where the rendering happens**:
+
+| Source | What reaches the NAS | What the NAS must do | Time |
+|---|---|---|---|
+| PC (PostScript driver) | already-rendered **PostScript** | just forward it | ~2 s |
+| Phone | **raw PDF / photo** | decode + convert + rasterise + package CAPT | 10–15 s |
+
+The PC does the heavy rendering on its own (fast) CPU; a phone can't, so the weak NAS CPU does it.
+
+At 600 dpi an A4 page is 35 million pixels — roughly 8–9 s of single-threaded rasterisation.
+The only real levers are lowering the dpi (quality loss) or moving the print server to a faster box.
+</details>
+
+<details>
 <summary><b>Is this a security risk?</b></summary>
 
 The script sets CUPS access control to `Allow all` (typical for a home LAN), which means any device
@@ -255,6 +294,10 @@ For an office network, restrict the ACL to your subnet as described in the deplo
 ```
 canon-capt-airprint/
 ├── canon-capt-airprint-setup.sh   # one-shot, idempotent deployment
+├── scripts/
+│   ├── jpeg2pdf.py                # embed JPEG into PDF without re-encoding (20x faster photos)
+│   ├── canon-pdf-filter.sh        # convert CMYK→RGB only when needed (fixes black blocks)
+│   └── patch-render-chain.sh      # apply the render-chain fix to an existing install
 ├── docs/
 │   ├── 01-原理与架构.md            # architecture (zh)
 │   ├── 02-部署步骤.md              # deployment (zh)
