@@ -1,0 +1,19 @@
+# 驱动包（约 122MB，绝不入库）
+*.tar.gz
+*.deb
+*.rpm
+canon-drv/
+/opt/canon-capt/
+
+# 日志与备份
+*.log
+*.bak.*
+backup-*/
+
+# 抓包
+*.pcap
+*-capture*.txt
+
+# 系统文件
+.DS_Store
+Thumbs.db
