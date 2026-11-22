@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="1080" viewBox="0 0 980 1080" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4a5568"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#c53030"/>
+    </marker>
+  </defs>
+
+  <rect width="980" height="1080" fill="#ffffff"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#1a202c">Canon CAPT 打印机：打印数据流与故障点</text>
+  <text x="40" y="74" font-size="14" fill="#718096">每一层都对应一组排查手段，详见 docs/03-故障排查.md</text>
+
+  <!-- 客户端 -->
+  <rect x="60" y="100" width="340" height="70" rx="10" fill="#ebf8ff" stroke="#3182ce" stroke-width="2"/>
+  <text x="80" y="130" font-size="16" font-weight="600" fill="#2c5282">iPhone / iPad / Mac / Windows / Linux</text>
+  <text x="80" y="152" font-size="13" fill="#4a5568">IPP over HTTP · 发送 PDF 或 Apple Raster (URF)</text>
+
+  <line x1="230" y1="170" x2="230" y2="205" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- CUPS -->
+  <rect x="60" y="210" width="340" height="70" rx="10" fill="#f0fff4" stroke="#38a169" stroke-width="2"/>
+  <text x="80" y="240" font-size="16" font-weight="600" fill="#22543d">CUPS :631（cupsd）</text>
+  <text x="80" y="262" font-size="13" fill="#4a5568">排队 · 格式协商 · 调度过滤器 · DNS-SD 记录</text>
+
+  <line x1="230" y1="280" x2="230" y2="315" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 过滤器 -->
+  <rect x="60" y="320" width="340" height="70" rx="10" fill="#fffaf0" stroke="#dd6b20" stroke-width="2"/>
+  <text x="80" y="350" font-size="16" font-weight="600" fill="#7b341e">过滤器链（cups-filters）</text>
+  <text x="80" y="372" font-size="13" fill="#4a5568">PDF / URF → PostScript（rastertopdf、pdftops、gstoraster）</text>
+
+  <line x1="230" y1="390" x2="230" y2="425" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- pstocapt3 -->
+  <rect x="60" y="430" width="340" height="70" rx="10" fill="#faf5ff" stroke="#805ad5" stroke-width="2"/>
+  <text x="80" y="460" font-size="16" font-weight="600" fill="#44337a">pstocapt3 + gs -sDEVICE=opvp</text>
+  <text x="80" y="482" font-size="13" fill="#4a5568">PostScript → CAPT 位图流 · 驱动 libcanonc3pl.so</text>
+
+  <line x1="230" y1="500" x2="230" y2="535" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ccp backend -->
+  <rect x="60" y="540" width="340" height="70" rx="10" fill="#f7fafc" stroke="#4a5568" stroke-width="2"/>
+  <text x="80" y="570" font-size="16" font-weight="600" fill="#1a202c">ccp 后端（CUPS backend）</text>
+  <text x="80" y="592" font-size="13" fill="#4a5568">TCP 127.0.0.1:59687 · 分块 + 逐块等待应答</text>
+
+  <line x1="230" y1="610" x2="230" y2="645" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ccpd -->
+  <rect x="60" y="650" width="340" height="70" rx="10" fill="#fff5f5" stroke="#e53e3e" stroke-width="2"/>
+  <text x="80" y="680" font-size="16" font-weight="600" fill="#742a2a">ccpd（守护进程）</text>
+  <text x="80" y="702" font-size="13" fill="#4a5568">会话管理 · 端口 59687(数据) / 59787(状态)</text>
+
+  <line x1="230" y1="720" x2="230" y2="755" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- captmoncnacb -->
+  <rect x="60" y="760" width="340" height="70" rx="10" fill="#fff5f5" stroke="#c53030" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="80" y="790" font-size="16" font-weight="600" fill="#742a2a">captmoncnacb（32 位助手）</text>
+  <text x="80" y="812" font-size="13" fill="#4a5568">真正操作 USB · 由 PPD 的 *opbidiPlugin 指定</text>
+
+  <line x1="230" y1="830" x2="230" y2="865" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 设备 -->
+  <rect x="60" y="870" width="340" height="70" rx="10" fill="#edf2f7" stroke="#2d3748" stroke-width="2"/>
+  <text x="80" y="900" font-size="16" font-weight="600" fill="#1a202c">/dev/usb/lbp7010c → /dev/usb/lp0</text>
+  <text x="80" y="922" font-size="13" fill="#4a5568">usblp 内核驱动 / libusb · Canon LBP7010C</text>
+
+  <!-- 右侧故障点 -->
+  <text x="470" y="120" font-size="15" font-weight="700" fill="#c53030">常见故障点</text>
+
+  <g font-size="12.5" fill="#4a5568">
+    <text x="470" y="150">• 打印面板看不到打印机</text>
+    <text x="486" y="170">→ AirPrint TXT 字段 / 403 / mDNS</text>
+
+    <text x="470" y="240">• 作业不进队列 / 队列 stopped</text>
+    <text x="486" y="260">→ 客户端没发出 / CUPS ACL</text>
+
+    <text x="470" y="330">• 作业瞬间失败</text>
+    <text x="486" y="350">→ 格式不受支持 / 过滤器缺失</text>
+
+    <text x="470" y="450">• 卡在 gs，CPU 不动</text>
+    <text x="486" y="470">→ ccpd 无应答（USB 已 stall）</text>
+    <text x="486" y="490">→ PPD 被改坏（勿手工加尺寸）</text>
+
+    <text x="470" y="560">• ccp send_data error</text>
+    <text x="486" y="580">→ 过滤器输出为空 / ccpd BUSY</text>
+
+    <text x="470" y="660">• 端口不通 / 永久 BUSY</text>
+    <text x="486" y="680">→ Type=simple 被杀 / 助手崩溃</text>
+
+    <text x="470" y="770">• 助手 segfault / exit 127</text>
+    <text x="486" y="790">→ 缺 i386 库（libxml2 / libpopt）</text>
+    <text x="486" y="810">→ 服务缺 LANG（strcmp(NULL)）</text>
+
+    <text x="470" y="880">• 写操作永久阻塞</text>
+    <text x="486" y="900">→ ipp-usb 抢设备 / 端点 stall</text>
+    <text x="486" y="920">→ 多打印机 lpN 漂移</text>
+  </g>
+
+  <!-- 底部速查 -->
+  <rect x="60" y="970" width="860" height="80" rx="10" fill="#f7fafc" stroke="#cbd5e0"/>
+  <text x="80" y="1000" font-size="14" font-weight="700" fill="#2d3748">三步急救</text>
+  <text x="80" y="1024" font-size="13" fill="#4a5568" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">pkill -9 -x captmoncnacb  →  canon-usbreset  →  systemctl restart ccpd</text>
+  <text x="80" y="1044" font-size="12.5" fill="#718096">三步无效时：拔打印机电源 15 秒再插回（软件复位救不了半死的固件）</text>
+</svg>
