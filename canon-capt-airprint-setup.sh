@@ -213,6 +213,19 @@ fi
 cupsaccept "$QUEUE" >/dev/null 2>&1
 cupsenable  "$QUEUE" >/dev/null 2>&1
 
+# ---------------------------------------------------------------- 6.5 渲染链
+step "6.5/10 安装渲染链优化（照片提速 + CMYK 黑块修复）"
+HERE=$(cd "$(dirname "$0")" && pwd)
+if [ -f "$HERE/scripts/patch-render-chain.sh" ]; then
+  if bash "$HERE/scripts/patch-render-chain.sh" >>"$LOG" 2>&1; then
+    pass "渲染链已优化（jpeg2pdf + 按需 RGB）"
+  else
+    warn "渲染链补丁执行失败，见 $LOG"
+  fi
+else
+  warn "缺少 scripts/patch-render-chain.sh，跳过（照片会走较慢的 imagetopdf）"
+fi
+
 # ---------------------------------------------------------------- 7. ccpd
 step "7/10 配置并启动 ccpd（Type=forking + locale + 启动前复位）"
 [ -e "$DEV_LINK" ] || { ln -sf /dev/usb/lp0 "$DEV_LINK" 2>/dev/null; warn "软链接缺失，暂用 /dev/usb/lp0"; }

@@ -39,7 +39,6 @@ Canon 的 **CAPT** 系列（LBP2900 / 3000 / 5100 / 6300 / 7010C / 7018C …）�
 
 <div align="center">
 <img src="docs/images/flow.svg" alt="打印数据流与故障点" width="880">
-<img src="docs/images/ios-airprint.png" alt="iPhone 隔空打印" width="400">
 </div>
 
 **实测结果**：iPhone（iOS 15 / iOS 26）、Mac、Windows、Linux 全部打通，A4/A5/B5 可选。
@@ -150,7 +149,7 @@ sudo bash canon-capt-airprint-setup.sh
 |---|---|---|
 | 🧠 | [01 · 原理与架构](docs/01-原理与架构.md) | 数据流图、每个组件负责什么、部署前自检清单 |
 | 🔧 | [02 · 部署步骤](docs/02-部署步骤.md) | 10 步手动部署（想理解每一步在干嘛就看这个） |
-| 🚑 | [03 · 故障排查](docs/03-故障排查.md) | **7 步定位法** + 12 条症状对照表 + 急救三步 |
+| 🚑 | [03 · 故障排查](docs/03-故障排查.md) | **7 步定位法** + 12 条症状对照表 + 急救三步 + **手机黑块/速度/进纸** |
 | ✅ | [04 · 验收与运维](docs/04-验收与运维.md) | 验收清单、日志在哪、升级注意、完整回滚 |
 | 📎 | [05 · 附录](docs/05-附录.md) | 文件清单、CAPT 协议速查、AirPrint 抓包判读 |
 
@@ -243,6 +242,10 @@ sudo tcpdump -i any -n 'tcp port 631'   # 抓一下 Windows 到底发没发
 ```
 canon-capt-airprint/
 ├── canon-capt-airprint-setup.sh   # 一键部署（幂等，可重复执行）
+├── scripts/
+│   ├── jpeg2pdf.py                # JPEG 直嵌 PDF（照片提速 20 倍）
+│   ├── canon-pdf-filter.sh        # PDF 按需 CUPS 转 RGB（修黑块）
+│   └── patch-render-chain.sh      # 给已装好的机器打补丁
 ├── docs/
 │   ├── 01-原理与架构.md
 │   ├── 02-部署步骤.md

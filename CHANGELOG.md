@@ -2,6 +2,23 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [1.1.0] - 2026-11-22
+
+### 新增
+- `scripts/jpeg2pdf.py`：JPEG 直接嵌入 PDF（不重编码），照片链路 30.8s → 1.45s（约 20 倍）
+- `scripts/canon-pdf-filter.sh`：PDF 按需转换——检测到 `/DeviceCMYK` 才转 RGB，纯 RGB 直接透传
+- `scripts/patch-render-chain.sh`：给已装好的机器补充渲染链优化，支持 `--revert`
+- 文档新增「6.5 手机打印专属问题」：黑块 / 速度 / A5 进纸三个现象
+
+### 修复
+- **手机打 PDF 表头变黑块**：CAPT 驱动对 CMYK 图像处理不可靠 → 服务端预转 RGB
+- **手机打印比电脑慢十几秒**：手机发原始文件，渲染全压在 NAS 的弱 CPU 上 → 用 jpeg2pdf 消除重复编码
+- 安装脚本自动安装渲染链优化（第 6.5 步）
+
+### 说明
+- 600dpi 下 A4 单页 3500 万像素，NAS 单线程栅格化约 8~9 秒，这是端到端 12~15 秒的主因
+- 想进一步提速只有两条路：降 dpi（画质受损）或换更强主机（N100 可达 6 秒）
+
 ## [Unreleased]
 
 ### 文档
